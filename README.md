@@ -1,13 +1,13 @@
 # ALS_Proyecto_Jacobo_Rivas_Lago
 
-# # Instalación
+## Instalación
 Es necesario tener:
 - Flask 2.0.2
 - Flask-Login 0.5.0
 - redis 3.5.3
 - werkzeug 2.0.2
 
-# # Manual de uso:
+## Manual de uso:
 Lanzar 
 ```python
 python init_db.py
