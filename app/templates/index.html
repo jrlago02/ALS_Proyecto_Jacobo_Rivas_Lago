@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<h1>Bienvenido al Sistema de Reservas del Restaurante Rivas</h1>
+{% if current_user.is_authenticated %}
+    <p>Bienvenido, {{ current_user.username }}</p>
+{% else %}
+    <p>Iniciar sesión o registrarse para crear una cuenta.</p>
+{% endif %}
+<p>En este sistema puedes realizar las siguientes acciones:</p>
+<ul>
+    {% if not current_user.is_authenticated %}
+        <li>Iniciar sesión o registrarse para crear una cuenta.</li>
+    {% endif %}
+    <li>Reservar una mesa en nuestro restaurante.</li>
+    <li>Ver nuestro menú y seleccionar platos individuales o un menú completo.</li>
+    <li>Calificar los platos que hayas probado.</li>
+    <li>Ver tus reservas actuales y pasadas.</li>
+    <li>Proponernos los platos que más te gusten.</li>
+</ul>
+<p>Por favor, usa el menú de navegación en la parte superior para acceder a las diferentes secciones de la aplicación.</p>
+{% endblock %}

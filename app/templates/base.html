@@ -1,0 +1,48 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Restaurante{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('menu.index') }}">Menú</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('reserva.index') }}">Reservar Mesa</a></li>
+                    <li><a href="{{ url_for('calificacion.index') }}">Calificar Platos</a></li>
+                    <li><a href="{{ url_for('reserva.mis_reservas') }}">Mis Reservas</a></li>
+                    <li><a href="{{ url_for('propuesta.proponer_plato') }}">Proponer Plato</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Registrar</a></li>
+                    <li><a href="{{ url_for('reserva.index') }}">Reservar Mesa</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Restaurante Rivas</p>
+    </footer>
+</body>
+</html>

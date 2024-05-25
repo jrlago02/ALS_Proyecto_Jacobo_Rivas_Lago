@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Reservar Mesa{% endblock %}
+
+{% block content %}
+<h2>Reservar Mesa</h2>
+
+<p>La reserva no permite cancelación y solo puede editarse una única vez, la fecha podrá ser retrasada un mes como máximo. </p>
+
+<form id="reserva-form" action="{{ url_for('reserva.create') }}" method="POST">
+    <input type="hidden" name="mesa_id" id="mesa_id">
+    <label for="num_personas">Número de Personas:</label>
+    <input type="number" name="num_personas" id="num_personas" required min="1" max="10">
+    
+    <label for="fecha">Fecha:</label>
+    <input type="date" name="fecha" id="fecha" required>
+    
+    <label for="hora">Hora:</label>
+    <input type="time" name="hora" id="hora" required>
+    
+    <button type="submit">Reservar</button>
+</form>
+
+<div id="mesa-asignada" style="margin-top: 20px; display: none;">
+    <h3>Mesa Asignada</h3>
+    <img id="mesa-img" src="" alt="Mesa asignada">
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    const timeNow = now.toTimeString().split(' ')[0].slice(0, 5);
+
+    document.getElementById('fecha').setAttribute('min', today);
+    document.getElementById('fecha').addEventListener('change', function() {
+        if (this.value === today) {
+            document.getElementById('hora').setAttribute('min', timeNow);
+        } else {
+            document.getElementById('hora').removeAttribute('min');
+        }
+    });
+});
+
+document.getElementById('num_personas').addEventListener('input', function() {
+    const numPersonas = this.value;
+    let mesaImgSrc = '';
+    let mesaId = '';
+
+    if (numPersonas <= 2) {
+        mesaImgSrc = '{{ url_for("static", filename="images/mesa2.png") }}';
+        mesaId = 'mesa2';
+    } else if (numPersonas <= 4) {
+        mesaImgSrc = '{{ url_for("static", filename="images/mesa4.png") }}';
+        mesaId = 'mesa4';
+    } else if (numPersonas <= 6) {
+        mesaImgSrc = '{{ url_for("static", filename="images/mesa6.png") }}';
+        mesaId = 'mesa6';
+    } else if (numPersonas <= 8) {
+        mesaImgSrc = '{{ url_for("static", filename="images/mesa8.png") }}';
+        mesaId = 'mesa8';
+    } else {
+        mesaImgSrc = '{{ url_for("static", filename="images/mesa10.png") }}';
+        mesaId = 'mesa10';
+    }
+
+    if (mesaImgSrc && mesaId) {
+        document.getElementById('mesa_id').value = mesaId;
+        document.getElementById('mesa-img').src = mesaImgSrc;
+        document.getElementById('mesa-asignada').style.display = 'block';
+    } else {
+        document.getElementById('mesa-asignada').style.display = 'none';
+    }
+});
+
+document.getElementById('reserva-form').addEventListener('submit', function(event) {
+    const numPersonas = document.getElementById('num_personas').value;
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+
+    if (!numPersonas || !fecha || !hora) {
+        alert('Por favor, complete todos los campos antes de reservar.');
+        event.preventDefault();
+        return;
+    }
+
+    const now = new Date();
+    const selectedDate = new Date(`${fecha}T${hora}`);
+
+    if (selectedDate < now) {
+        alert('La fecha y hora de reserva no pueden ser anteriores a la actual.');
+        event.preventDefault();
+        return;
+    }
+
+    const confirmacion = confirm(`¿Está seguro de que desea reservar una mesa para ${numPersonas} personas el ${fecha} a las ${hora}?`);
+    if (!confirmacion) {
+        event.preventDefault();
+    }
+});
+</script>
+
+
+
+{% endblock %}

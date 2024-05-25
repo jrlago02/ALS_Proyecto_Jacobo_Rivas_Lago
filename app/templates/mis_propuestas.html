@@ -1,0 +1,14 @@
+<!-- templates/mis_propuestas.html -->
+{% extends 'base.html' %}
+
+{% block title %}Mis Propuestas{% endblock %}
+
+{% block content %}
+<h2>Mis Propuestas de Platos</h2>
+<ul>
+    {% for propuesta in propuestas %}
+    <li>{{ propuesta.titulo }}</li>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('propuesta.proponer_plato') }}">Volver</a>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Calificar Platos{% endblock %}
+
+{% block content %}
+<h2>Calificar Platos</h2>
+
+<form action="{{ url_for('calificacion.create') }}" method="POST">
+    <label for="plato">Plato:</label>
+    <select name="plato_id">
+        {% for plato in platos %}
+        <option value="{{ plato._id }}">{{ plato.nombre }}</option>
+        {% endfor %}
+    </select>
+    <label for="nota">Nota (0-5):</label>
+    <input type="number" name="nota" min="0" max="5" step="0.1" required>
+    <button type="submit">Calificar</button>
+</form>
+
+{% if plato_seleccionado %}
+<h3>Estas son las últimas opiniones de nuestros clientes sobre {{ plato_seleccionado.nombre }}, su nota media es: {{ nota_media }}</h3>
+<ul>
+    {% for calificacion in calificaciones %}
+    <li>{{ calificacion.nota }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

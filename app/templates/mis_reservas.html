@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Reservas{% endblock %}
+
+{% block content %}
+<h2>Mis Reservas</h2>
+
+<h3>Reservas Futuras</h3>
+{% if reservas_futuras %}
+    <table>
+        <tr>
+            <th>Número de Personas</th>
+            <th>Fecha y Hora</th>
+            <th>Acciones</th>
+        </tr>
+        {% for reserva in reservas_futuras %}
+        <tr>
+            <td style="text-align: center;">{{ reserva.num_personas }}</td>
+            <td style="text-align: center;">{{ reserva.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td style="text-align: center;">
+                <a href="{{ url_for('reserva.editar', reserva_id=reserva._id) }}">
+                    <img src="../static/css/edit-246.png" width="20px">
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No tienes reservas futuras.</p>
+{% endif %}
+
+
+<h3>Reservas Antiguas</h3>
+{% if reservas_antiguas %}
+    <table>
+        <tr>
+            <th>Número de Personas</th>
+            <th>Fecha y Hora</th>
+        </tr>
+        {% for reserva in reservas_antiguas %}
+        <tr>
+            <td>{{ reserva.num_personas }}</td>
+            <td>{{ reserva.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No tienes reservas antiguas.</p>
+{% endif %}
+{% endblock %}

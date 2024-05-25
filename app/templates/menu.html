@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Menú{% endblock %}
+
+{% block content %}
+<h2>Nuestros Menús</h2>
+<table class="menu-table">
+    <tr>
+        {% for menu in menus %}
+        <td class="menu-item left-column">
+            <h3>{{ menu.nombre }}</h3>
+            <p>{{ menu.descripcion }}</p>
+            <ul>
+                {% for plato in menu.platos %}
+                <li>{{ plato.nombre }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        {% if loop.index % 3 == 0 %}
+    </tr>
+    <tr>
+        {% endif %}
+        {% endfor %}
+    </tr>
+</table>
+
+<h2>Contamos con estos platos individuales</h2>
+<table class="plato-table">
+    <tr>
+        {% for plato in platos %}
+        <td class="plato-item left-column">
+            <h3>{{ plato.nombre }}</h3>
+            <p>{{ plato.descripcion|safe }}</p>
+            <p>Precio: {{ plato.precio }} €</p>
+            <img src="{{ url_for('static', filename='images/' + plato.nombre | replace(' ', '_') + '.jpg') }}"
+                alt="{{ plato.nombre }}">
+        </td>
+        {% if loop.index % 3 == 0 %}
+    </tr>
+    <tr>
+        {% endif %}
+        {% endfor %}
+    </tr>
+</table>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1,
+    h2,
+    h3 {
+        margin-bottom: 10px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    button {
+        display: block;
+        margin-top: 5px;
+    }
+
+    .menu-table,
+    .plato-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 30px 20px;
+        margin-bottom: 20px;
+    }
+
+    .menu-item,
+    .plato-item {
+        width: 30%;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+        box-sizing: border-box;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .left-column {
+        margin-right: 5%;
+    }
+
+    .plato-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    h3 {
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    p {
+        line-height: 1.6;
+    }
+</style>
+
+{% endblock %}

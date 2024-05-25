@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Reserva{% endblock %}
+
+{% block content %}
+<h2>Editar Reserva</h2>
+<form method="POST" action="{{ url_for('reserva.editar', reserva_id=reserva._id) }}">
+    <label for="num_personas">Número de Personas:</label>
+    <input type="number" id="num_personas" name="num_personas" value="{{ reserva.num_personas }}" required>
+
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" name="fecha" value="{{ reserva.fecha_hora.strftime('%Y-%m-%d') }}" required>
+
+    <label for="hora">Hora:</label>
+    <input type="time" id="hora" name="hora" value="{{ reserva.fecha_hora.strftime('%H:%M') }}" required>
+
+    <button type="submit">Actualizar Reserva</button>
+</form>
+{% endblock %}
